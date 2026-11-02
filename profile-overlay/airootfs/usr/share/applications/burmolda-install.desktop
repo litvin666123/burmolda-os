@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Install Burmolda OS
+GenericName=Operating System Installer
+Comment=Launch the guided Archinstall wizard
+Exec=/usr/local/bin/burmolda-install
+Icon=system-software-install
+Terminal=false
+Categories=System;Settings;
