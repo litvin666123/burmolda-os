@@ -1,0 +1,47 @@
+name: Build BURMOLDA OS ISO
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: burmolda-iso-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-iso:
+    name: Build x86_64 Arch ISO
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Validate and build inside a privileged Arch Linux container
+        run: |
+          docker run --rm --privileged \
+            -v "$GITHUB_WORKSPACE:/workspace" \
+            -w /workspace \
+            archlinux:base-devel \
+            bash -euxo pipefail -c '
+              pacman -Syu --noconfirm --needed \
+                archiso grub dosfstools squashfs-tools libisoburn \
+                mtools arch-install-scripts python
+              bash -n scripts/build-iso.sh
+              python -m py_compile scripts/prepare-profile.py scripts/generate-assets.py
+              BURMOLDA_CI_ROOT_BUILD=1 bash ./scripts/build-iso.sh
+            '
+
+      - name: Upload ISO and checksum
+        uses: actions/upload-artifact@v4
+        with:
+          name: burmolda-os-x86_64-iso
+          path: |
+            out/*.iso
+            out/*.iso.sha256
+          if-no-files-found: error
+          retention-days: 7
