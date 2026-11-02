@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Burmolda Wallpapers
+Comment=Open the bundled Burmolda wallpaper collection
+Exec=xdg-open /usr/share/backgrounds/burmolda/
+Icon=preferences-desktop-wallpaper
+Terminal=false
+Categories=Settings;DesktopSettings;
