@@ -1,0 +1,7 @@
+.build/
+work/
+out/
+__pycache__/
+*.py[cod]
+*.iso
+*.iso.sha256
