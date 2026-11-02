@@ -1,15 +1,15 @@
 name: Build BURMOLDA OS ISO
 
 on:
+  # Run only on demand: the repository is populated file-by-file, and automatic
+  # push triggers would queue a separate full ISO build for every tiny commit.
   workflow_dispatch:
-  push:
-    branches: [main]
 
 permissions:
   contents: read
 
 concurrency:
-  group: burmolda-iso-${{ github.ref }}
+  group: burmolda-iso-manual
   cancel-in-progress: false
 
 jobs:
