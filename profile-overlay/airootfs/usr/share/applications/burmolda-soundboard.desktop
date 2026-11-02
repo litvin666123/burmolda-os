@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Burmolda Soundboard
+GenericName=Meme Soundboard
+Comment=Play original Burmolda sound effects
+Exec=xdg-open /usr/share/burmolda/soundboard/index.html
+Icon=audio-speakers
+Terminal=false
+Categories=AudioVideo;Audio;
