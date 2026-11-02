@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+marker="$HOME/.config/.burmolda-first-login-done"
+[[ -e "$marker" ]] && exit 0
+sleep 8
+wallpaper="/usr/share/backgrounds/burmolda/01-burmolda-neon.png"
+if command -v plasma-apply-wallpaperimage >/dev/null 2>&1 && [[ -f "$wallpaper" ]]; then
+  plasma-apply-wallpaperimage "$wallpaper" || true
+fi
+mkdir -p "$HOME/.config"
+touch "$marker"
