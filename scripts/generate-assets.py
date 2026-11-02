@@ -41,7 +41,7 @@ def make_wallpaper(path: Path, mode: int) -> None:
                 p = [230, 205, 255]
             raw.extend(p)
     compressed = zlib.compress(bytes(raw), 7)
-    data = b"\\x89PNG\\r\\n\\x1a\\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", W, H, 8, 2, 0, 0, 0))
+    data = b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", W, H, 8, 2, 0, 0, 0))
     data += chunk(b"IDAT", compressed) + chunk(b"IEND", b"")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(data)
@@ -49,9 +49,8 @@ def make_wallpaper(path: Path, mode: int) -> None:
 
 def make_sound(path: Path, tones: list[tuple[float, float]], duration: float, descending: bool = False) -> None:
     rate = 22050
-    frames = int(rate * duration)
     samples = bytearray()
-    for i in range(frames):
+    for i in range(int(rate * duration)):
         t = i / rate
         freq = tones[0][0]
         for f, start in tones:
