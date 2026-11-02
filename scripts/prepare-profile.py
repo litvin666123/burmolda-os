@@ -10,7 +10,7 @@ import sys
 
 PACKAGES = [
     "plasma-meta", "sddm", "sddm-kcm", "networkmanager", "pipewire",
-    "pipewire-alsa", "pipewire-pulse", "wireplumber", "firefox", "dolphin", "konsole",
+    "pipewire-alsa", "pipewire-pulse", "wireplumber", "firefox", "dolphin", "konsole", "kdialog",
     "ark", "spectacle", "vlc", "pavucontrol", "plasma-nm", "plasma-pa",
     "bluedevil", "discover", "packagekit-qt6", "archinstall", "grub",
     "os-prober", "efibootmgr", "sudo", "git", "fastfetch", "htop",
