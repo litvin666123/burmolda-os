@@ -1,0 +1,12 @@
+[Unit]
+Description=Create the temporary Burmolda live desktop user
+Before=sddm.service
+After=systemd-user-sessions.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/burmolda-live-setup
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
