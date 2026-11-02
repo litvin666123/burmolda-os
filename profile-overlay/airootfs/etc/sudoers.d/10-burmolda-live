@@ -1,0 +1,2 @@
+# Passwordless sudo is limited to the throwaway live ISO account.
+burmolda ALL=(ALL:ALL) NOPASSWD: ALL
