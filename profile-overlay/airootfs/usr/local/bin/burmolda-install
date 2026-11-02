@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+if ! command -v archinstall >/dev/null 2>&1; then
+  kdialog --error "Archinstall is missing from this ISO." || true
+  exit 1
+fi
+if ! kdialog --title "Burmolda OS Installer" --yesno "This opens the guided Archinstall wizard in a terminal.\n\nIMPORTANT: selecting a disk and continuing can erase its data. Test inside a virtual machine first.\n\nIn Archinstall choose KDE Plasma as the desktop profile and GRUB as the bootloader. Continue?"; then
+  exit 0
+fi
+exec konsole --separate --hold -e sudo archinstall
