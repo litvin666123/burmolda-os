@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Burmolda First Login Setup
+Exec=/usr/local/bin/burmolda-first-login
+OnlyShowIn=KDE;
+X-KDE-autostart-phase=1
+NoDisplay=true
