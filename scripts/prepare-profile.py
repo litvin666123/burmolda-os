@@ -65,29 +65,29 @@ def main() -> int:
         if re.search(pattern, text):
             text = re.sub(pattern, f"{key}={value}", text, count=1)
         else:
-            text += f"\\n{key}={value}\\n"
+            text += f"\n{key}={value}\n"
 
-    # Archiso's current GRUB mode is named uefi.grub.
+    # Archiso's current profile uses systemd-boot by default; use GRUB instead.
     text = text.replace("uefi.systemd-boot", "uefi.grub")
     if "uefi.grub" not in text:
-        bootmodes = re.search(r"(?ms)^bootmodes=\\((.*?)\\)", text)
+        bootmodes = re.search(r"(?ms)^bootmodes=\((.*?)\)", text)
         if not bootmodes:
             print("Could not enable UEFI GRUB: unsupported profiledef.sh format.", file=sys.stderr)
             return 3
-        block = re.sub(r"\\s*'uefi[^']*systemd-boot[^']*'", "", bootmodes.group(1)).rstrip()
+        block = re.sub(r"\s*'uefi[^']*systemd-boot[^']*'", "", bootmodes.group(1)).rstrip()
         text = text[:bootmodes.start(1)] + block + " 'uefi.grub'" + text[bootmodes.end(1):]
     profiledef.write_text(text, encoding="utf-8")
 
     existing = packages_file.read_text(encoding="utf-8")
     with packages_file.open("a", encoding="utf-8") as out:
-        out.write("\\n# Burmolda OS desktop and utilities\\n")
+        out.write("\n# Burmolda OS desktop and utilities\n")
         for package in PACKAGES:
-            if not re.search(rf"(?m)^\\s*{re.escape(package)}\\s*$", existing):
-                out.write(package + "\\n")
+            if not re.search(rf"(?m)^\s*{re.escape(package)}\s*$", existing):
+                out.write(package + "\n")
 
     copy_tree(args.overlay, args.profile / "airootfs")
 
-    # GitHub's contents API stores text files as 0644; restore live script permissions.
+    # GitHub's contents API stores text files as 0644; restore runtime permissions.
     live_bin = args.profile / "airootfs/usr/local/bin"
     for script in live_bin.iterdir():
         if script.is_file():
@@ -97,6 +97,7 @@ def main() -> int:
         if sudoers.is_file():
             sudoers.chmod(0o440)
 
+    # Enable the live desktop, network access, and temporary-account setup at boot.
     systemd_root = args.profile / "airootfs/etc/systemd/system"
     multi_user = systemd_root / "multi-user.target.wants"
     graphical = systemd_root / "graphical.target.wants"
