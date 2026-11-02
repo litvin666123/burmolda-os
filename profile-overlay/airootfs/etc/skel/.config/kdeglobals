@@ -1,0 +1,16 @@
+[General]
+ColorScheme=BreezeDark
+Name=Burmolda Night
+TerminalApplication=konsole
+
+[Icons]
+Theme=breeze-dark
+
+[KDE]
+widgetStyle=Breeze
+
+[WM]
+activeBackground=38,14,46
+activeForeground=255,255,255
+inactiveBackground=25,22,31
+inactiveForeground=190,180,200
