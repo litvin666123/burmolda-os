@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+if ! id burmolda >/dev/null 2>&1; then
+  useradd --create-home --groups wheel,audio,video,optical,storage --shell /bin/bash burmolda
+  passwd --delete burmolda >/dev/null
+fi
+install -d -o burmolda -g burmolda /home/burmolda
+if [[ ! -e /home/burmolda/.config/kdeglobals ]]; then
+  cp -a /etc/skel/. /home/burmolda/
+  chown -R burmolda:burmolda /home/burmolda
+fi
