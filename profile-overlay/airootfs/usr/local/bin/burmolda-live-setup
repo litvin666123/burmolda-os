@@ -1,11 +1,28 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
-if ! id burmolda >/dev/null 2>&1; then
-  useradd --create-home --groups wheel,audio,video,optical,storage --shell /bin/bash burmolda
-  passwd --delete burmolda >/dev/null
+
+LIVE_USER="burmolda"
+LIVE_PASSWORD="burmolda"
+
+# Current Arch images do not necessarily ship the historical audio/video/
+# optical/storage groups. The Live session only needs the wheel group.
+if ! getent group wheel >/dev/null 2>&1; then
+  groupadd wheel
 fi
-install -d -o burmolda -g burmolda /home/burmolda
-if [[ ! -e /home/burmolda/.config/kdeglobals ]]; then
-  cp -a /etc/skel/. /home/burmolda/
-  chown -R burmolda:burmolda /home/burmolda
+
+if ! id "$LIVE_USER" >/dev/null 2>&1; then
+  useradd --create-home --groups wheel --shell /bin/bash "$LIVE_USER"
 fi
+
+# A password is provided as a fallback if SDDM autologin is unavailable.
+# This account exists only in the disposable Live ISO; users create their
+# own credentials during installation.
+printf '%s:%s\n' "$LIVE_USER" "$LIVE_PASSWORD" | chpasswd
+
+install -d -o "$LIVE_USER" -g "$LIVE_USER" "/home/$LIVE_USER"
+if [[ ! -e "/home/$LIVE_USER/.config/kdeglobals" ]]; then
+  cp -a /etc/skel/. "/home/$LIVE_USER/"
+fi
+chown -R "$LIVE_USER:$LIVE_USER" "/home/$LIVE_USER"
+
+echo "Burmolda Live user '$LIVE_USER' is ready."
